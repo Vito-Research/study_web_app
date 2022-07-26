@@ -1,6 +1,6 @@
 import streamlit as st 
 import streamlit.components.v1 as components
-from fitbit import heartrate
+from fitbit import hr
 st.image("Vito.png")
 
 st.header("Vito Study")
