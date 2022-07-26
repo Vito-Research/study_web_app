@@ -9,16 +9,16 @@ class BearerAuth(requests.auth.AuthBase):
 
 def hr(start, end, access_token, user_id):
     
-    return requests.get("https://api.fitbit.com/1/user/" + str(user_id) + "/activities/heart/date/" + str(start) + "/"+ str(end) + ".json", auth=BearerAuth(access_token)).json()
+    return requests.get("https://api.fitbit.com/1/user/" + str(user_id) + "/activities/heart/date/" + str(start) + "/" + str(end) + ".json", auth=BearerAuth(access_token)).json()
 
-def o2(start, end, access_token):
+def o2(start, end, access_token,  user_id):
     
-    requests.get("https://api.fitbit.com/1/user/"  + str(user_id) + "/spo2/date/" + str(start) + str(end) + ".json", auth=BearerAuth(access_token))
+    return requests.get("https://api.fitbit.com/1/user/" + str(user_id) + "/spo2/date/" + str(start) + "/" + str(end) + ".json", auth=BearerAuth(access_token)).json()
 
-def rr(start, end, access_token):
+def rr(start, end, access_token,  user_id):
     
-    requests.get("https://api.fitbit.com/1/user/"  + str(user_id) + "/br/date/" + str(start) + str(end) + ".json", auth=BearerAuth(access_token))
+    return requests.get("https://api.fitbit.com/1/user/"  + str(user_id) + "/br/date/" + str(start) + "/" + str(end) + ".json", auth=BearerAuth(access_token)).json()
 
-def hrv(start, end, access_token):
+def hrv(start, end, access_token,  user_id):
     
-    requests.get("https://api.fitbit.com/1/user/"  + str(user_id) + "/hrv/date/" + str(start) + str(end) + ".json", auth=BearerAuth(access_token))
+    return requests.get("https://api.fitbit.com/1/user/"  + str(user_id) + "/hrv/date/" + str(start) + "/" + str(end) + ".json", auth=BearerAuth(access_token)).json()

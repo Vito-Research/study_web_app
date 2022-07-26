@@ -1,6 +1,9 @@
 import streamlit as st 
 import streamlit.components.v1 as components
 from fitbit import hr
+from fitbit import o2
+from fitbit import rr
+from fitbit import hrv
 st.image("Vito.png")
 
 st.header("Vito Study")
@@ -23,6 +26,11 @@ There are no known risks to participating in this study.
 The data collected in this study is collected anonymously, the researchers nor anyone else will know the origin of the data other than the fact that it came from an authorized participant via the app, thus the data is not linked to participants. 
 """)
 
+st.subheader("1. Press the \"Authorize with Fitbit\"")
+
+st.subheader("2. Enter login information")
+st.subheader("3. Once redirected to Vito's website, copy the url")
+st.subheader("4. Paste the url into the textbox below")
 
 link = '[Authorize with Fitbit](https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=2389P9&redirect_uri=https%3A%2F%2Fvitovitals.org&scope=heartrate%20sleep%20oxygen_saturation%20respiratory_rate%20temperature&expires_in=604800)'
 st.markdown(link, unsafe_allow_html=True)
@@ -31,12 +39,23 @@ st.caption("https://www.fitbit.com/oauth2/authorize?response_type=token&client_i
 fitbitResponse = st.text_input("Enter Response From Fitbit Authorization")
 
 if fitbitResponse != "":
+
     parsed = fitbitResponse.split("#access_token=")[1]
     
     token = parsed.split("&user_id")[0]
+    st.write(token)
     user_id = parsed.split("&user_id=")[1].split("&")[0]
+    st.write(user_id)
+    
     
     st.write(hr("2020-01-01", "2022-01-08", token, user_id))
+    st.write(rr("2020-01-01", "2022-01-08", token, user_id))
+    st.write(hrv("2020-01-01", "2022-01-08", token, user_id))
+    st.write(o2("2020-01-01", "2022-01-08", token, user_id))
+
+    
+
+
 
 
 
