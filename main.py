@@ -1,11 +1,11 @@
-import streamlit as st 
+import streamlit as st
 import streamlit.components.v1 as components
 from fitbit import hr
 from fitbit import o2
 from fitbit import rr
 from fitbit import hrv
-st.image("Vito.png")
 
+st.image("Vito.png")
 st.header("Vito Study")
 st.subheader("A study aiming to detect infection in real time using smartwatch data")
 
@@ -31,7 +31,6 @@ authorized participant via the app, thus the data are not linked to participants
 """)
 
 st.subheader("1. Press the \"Authorize with Fitbit\"")
-
 st.subheader("2. Enter login information")
 st.subheader("3. Once redirected to Vito's website, copy the url")
 st.subheader("4. Paste the url into the textbox below")
@@ -45,23 +44,13 @@ fitbitResponse = st.text_input("Enter Response From Fitbit Authorization")
 if fitbitResponse != "":
 
     parsed = fitbitResponse.split("#access_token=")[1]
-    
+
     token = parsed.split("&user_id")[0]
     st.write(token)
     user_id = parsed.split("&user_id=")[1].split("&")[0]
     st.write(user_id)
-    
-    
+
     st.write(hr("2020-01-01", "2022-01-08", token, user_id))
     st.write(rr("2020-01-01", "2022-01-08", token, user_id))
     st.write(hrv("2020-01-01", "2022-01-08", token, user_id))
     st.write(o2("2020-01-01", "2022-01-08", token, user_id))
-
-    
-
-
-
-
-
-
-
