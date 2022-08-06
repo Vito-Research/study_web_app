@@ -35,9 +35,9 @@ st.subheader("2. Enter login information")
 st.subheader("3. Once redirected to Vito's website, copy the url")
 st.subheader("4. Paste the url into the textbox below")
 
-link = '[Authorize with Fitbit](https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=2389P9&redirect_uri=https%3A%2F%2Fvitovitals.org&scope=heartrate%20sleep%20oxygen_saturation%20respiratory_rate%20temperature&expires_in=604800)'
-st.markdown(link, unsafe_allow_html=True)
-st.caption("https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=2389P9&redirect_uri=https%3A%2F%2Fvitovitals.org&scope=heartrate%20sleep%20oxygen_saturation%20respiratory_rate%20temperature&expires_in=604800")
+link = "https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=2389P9&redirect_uri=https%3A%2F%2Fvitovitals.org&scope=heartrate%20sleep%20oxygen_saturation%20respiratory_rate%20temperature&expires_in=604800"
+st.markdown(f'[Authorize with Fitbit]({link})', unsafe_allow_html=True)
+st.caption(link)
 
 fitbitResponse = st.text_input("Enter Response From Fitbit Authorization")
 
