@@ -17,7 +17,7 @@ def o2(start, end, access_token,  user_id):
 
 def rr(start, end, access_token,  user_id):
     
-    return requests.get("https://api.fitbit.com/1/user/"  + str(user_id) + "/br/date/" + str(start) + "/" + str(end) + ".json", auth=BearerAuth(access_token)).json()
+    return requests.get("https://api.fitbit.com/1/user/"  + str(user_id) + "/br/date/" + str(start) + "/" + str(end) + ".json", auth=BearerAuth(access_token))
 
 def hrv(start, end, access_token,  user_id):
     

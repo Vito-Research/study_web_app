@@ -4,6 +4,8 @@ from fitbit import hr
 from fitbit import o2
 from fitbit import rr
 from fitbit import hrv
+from fire import uploadFile
+import json
 st.image("Vito.png")
 
 st.header("Vito Study")
@@ -47,12 +49,29 @@ if fitbitResponse != "":
     user_id = parsed.split("&user_id=")[1].split("&")[0]
     st.write(user_id)
     
+    hrResponse = hr("2020-01-01", "2022-01-08", token, user_id)
+    st.write(hrResponse)
+    st.download_button(label="Download HR", data=json.dumps(hrResponse))
     
-    st.write(hr("2020-01-01", "2022-01-08", token, user_id))
-    st.write(rr("2020-01-01", "2022-01-08", token, user_id))
-    st.write(hrv("2020-01-01", "2022-01-08", token, user_id))
-    st.write(o2("2020-01-01", "2022-01-08", token, user_id))
+   # Can only get 1 month at a time
+    try:
+        rrData = rr("2022-07-25", "2022-08-05", token, user_id)
+        st.write(rrData)
+        st.download_button(label="Download RR", data=rrData.text)
+    except:
+        print()
+    
+    
+    try:
+        st.write(hrv("2020-07-25", "2022-08-05", token, user_id))
+    except:
+        print()
+    try:
+        st.write(o2("2020-07-25", "2022-08-05", token, user_id))
+    except:
+        print()
 
+    
     
 
 

@@ -1,18 +1,21 @@
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore
+
+
+import pandas as pd
+import gspread
+import df2gspread as d2g
 import uuid
 
 def uploadFile(df):
-    cred = credentials.Certificate('serviceAccount.json')
-    firebase_admin.initialize_app(cred)
 
-    db = firestore.client()
-
-    doc_ref = db.collection(u'Data').document(str(uuid.uuid4()))
-    doc_ref.set({
-    df
-})
+    scope = ['https://spreadsheets.google.com/feeds',
+            'https://www.googleapis.com/auth/drive']
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(
+        'jsonFileFromGoogle.json', scope)
+        
+    gc = gspread.authorize(credentials)
+    spreadsheet_key = 'red_url_code_goes_here'
+    wks_name = 'Master'
+    d2g.upload(df, spreadsheet_key, wks_name, credentials=credentials, row_names=True)
 
 
 
