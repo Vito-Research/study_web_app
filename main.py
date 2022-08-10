@@ -1,9 +1,9 @@
 import streamlit as st
-import streamlit.components.v1 as components
-from fitbit import hr
-from fitbit import o2
-from fitbit import rr
-from fitbit import hrv
+
+from fitbit import get_breathing_rate
+from fitbit import get_heart_rate
+from fitbit import get_heart_rate_variability
+from fitbit import get_oxygen_saturation
 
 st.image("Vito.png")
 st.header("Vito Study")
@@ -42,7 +42,6 @@ st.caption(link)
 fitbitResponse = st.text_input("Enter Response From Fitbit Authorization")
 
 if fitbitResponse != "":
-
     parsed = fitbitResponse.split("#access_token=")[1]
 
     token = parsed.split("&user_id")[0]
@@ -50,7 +49,7 @@ if fitbitResponse != "":
     user_id = parsed.split("&user_id=")[1].split("&")[0]
     st.write(user_id)
 
-    st.write(hr("2020-01-01", "2022-01-08", token, user_id))
-    st.write(rr("2020-01-01", "2022-01-08", token, user_id))
-    st.write(hrv("2020-01-01", "2022-01-08", token, user_id))
-    st.write(o2("2020-01-01", "2022-01-08", token, user_id))
+    st.write(get_heart_rate(token, user_id, "2020-01-01", "2022-01-08"))
+    st.write(get_breathing_rate(token, user_id, "2020-01-01", "2022-01-08"))
+    st.write(get_heart_rate_variability(token, user_id, "2020-01-01", "2022-01-08"))
+    st.write(get_oxygen_saturation(token, user_id, "2020-01-01", "2022-01-08"))
