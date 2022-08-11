@@ -1,24 +1,60 @@
+from datetime import timedelta
+
+import pandas as pd
 import requests
+
+URL = "https://api.fitbit.com/1/user/{user_id}/{data}/date/{start}/{end}.json"
+
 
 class BearerAuth(requests.auth.AuthBase):
     def __init__(self, token):
         self.token = token
+
     def __call__(self, r):
         r.headers["authorization"] = "Bearer " + self.token
         return r
 
-def hr(start, end, access_token, user_id):
-    
-    return requests.get("https://api.fitbit.com/1/user/" + str(user_id) + "/activities/heart/date/" + str(start) + "/" + str(end) + ".json", auth=BearerAuth(access_token)).json()
 
-def o2(start, end, access_token,  user_id):
-    
-    return requests.get("https://api.fitbit.com/1/user/" + str(user_id) + "/spo2/date/" + str(start) + "/" + str(end) + ".json", auth=BearerAuth(access_token)).json()
+def get(access_token, user_id, data, start, end, days_per_request=0):
+    if days_per_request > 0:
+        dates = [d.strftime("%Y-%m-%d") for d in pd.date_range(start=start, end=end, freq=f"{days_per_request}D")]
 
-def rr(start, end, access_token,  user_id):
-    
-    return requests.get("https://api.fitbit.com/1/user/"  + str(user_id) + "/br/date/" + str(start) + "/" + str(end) + ".json", auth=BearerAuth(access_token)).json()
+        if dates[len(dates) - 1] != end:
+            dates.append((pd.to_datetime(end) + timedelta(days=1)).strftime("%Y-%m-%d"))
+        if len(dates) > 1:
+            response = {}
 
-def hrv(start, end, access_token,  user_id):
-    
-    return requests.get("https://api.fitbit.com/1/user/"  + str(user_id) + "/hrv/date/" + str(start) + "/" + str(end) + ".json", auth=BearerAuth(access_token)).json()
+            for i in range(0, len(dates) - 1):
+                start_date = dates[i]
+                end_date = (pd.to_datetime(dates[i + 1]) - timedelta(days=1)).strftime("%Y-%m-%d")
+                current_response = requests.get(
+                    URL.format(user_id=user_id, data=data, start=start_date, end=end_date),
+                    auth=BearerAuth(access_token)
+                ).json()
+
+                if not response:
+                    response = current_response
+                else:
+                    key = next(iter(response))
+                    response[key].extend(current_response[key])
+            return response
+    return requests.get(
+        URL.format(user_id=user_id, data=data, start=start, end=end),
+        auth=BearerAuth(access_token)
+    ).json()
+
+
+def get_heart_rate(access_token, user_id, start, end):
+    return get(access_token, user_id, "activities/heart", start, end)
+
+
+def get_oxygen_saturation(access_token, user_id, start, end):
+    return get(access_token, user_id, "spo2", start, end)
+
+
+def get_breathing_rate(access_token, user_id, start, end):
+    return get(access_token, user_id, "br", start, end, days_per_request=30)
+
+
+def get_heart_rate_variability(access_token, user_id, start, end):
+    return get(access_token, user_id, "hrv", start, end, days_per_request=30)
