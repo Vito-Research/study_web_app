@@ -4,6 +4,9 @@ from fitbit import get_breathing_rate
 from fitbit import get_heart_rate
 from fitbit import get_heart_rate_variability
 from fitbit import get_oxygen_saturation
+from result import results
+from datetime import date
+import datetime
 
 st.image("Vito.png")
 st.header("Vito Study")
@@ -45,11 +48,23 @@ if fitbitResponse != "":
     parsed = fitbitResponse.split("#access_token=")[1]
 
     token = parsed.split("&user_id")[0]
-    st.write(token)
     user_id = parsed.split("&user_id=")[1].split("&")[0]
-    st.write(user_id)
+    anchorDate = datetime.datetime.strftime(date.today(), '%Y-%m-%d')
+    date = st.date_input("Enter date that you had an infection")
+    st.write(str(datetime.datetime.strftime(date, '%Y-%m-%d')))
+    st.write(anchorDate)
+    if str(datetime.datetime.strftime(date, '%Y-%m-%d')) != str(anchorDate):
+        hr = get_heart_rate(token, user_id, "2020-01-01", "2022-08-11")
+        br = get_breathing_rate(token, user_id, "2020-01-01", "2022-08-11")
+        hrv = get_heart_rate_variability(token, user_id, "2020-01-01", "2022-01-08")
+        o2 = get_oxygen_saturation(token, user_id, "2020-01-01", "2022-01-08")
 
-    st.write(get_heart_rate(token, user_id, "2020-01-01", "2022-01-08"))
-    st.write(get_breathing_rate(token, user_id, "2020-01-01", "2022-01-08"))
-    st.write(get_heart_rate_variability(token, user_id, "2020-01-01", "2022-01-08"))
-    st.write(get_oxygen_saturation(token, user_id, "2020-01-01", "2022-01-08"))
+        results(date, hr, hrv, br, o2)
+    
+    
+        
+
+    # st.write()
+    # st.write(get_breathing_rate(token, user_id, "2020-01-01", "2022-08-11"))
+    # st.write(get_heart_rate_variability(token, user_id, "2020-01-01", "2022-01-08"))
+    # st.write(get_oxygen_saturation(token, user_id, "2020-01-01", "2022-01-08"))
