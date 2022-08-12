@@ -1,9 +1,9 @@
 import streamlit as st
 
-from fitbit import get_breathing_rate
-from fitbit import get_heart_rate
-from fitbit import get_heart_rate_variability
-from fitbit import get_oxygen_saturation
+import fire
+from fitbit import *
+
+fire.init("serviceAccount.json")
 
 st.image("Vito.png")
 st.header("Vito Study")
@@ -30,26 +30,52 @@ and neither the researchers nor anyone else will know the origin of the data oth
 authorized participant via the app, thus the data are not linked to participants.
 """)
 
-st.subheader("1. Press the \"Authorize with Fitbit\"")
-st.subheader("2. Enter login information")
-st.subheader("3. Once redirected to Vito's website, copy the url")
-st.subheader("4. Paste the url into the textbox below")
+st.subheader("Upload Data")
+st.markdown("""
+    1. Click \"Authorize with Fitbit\"
+    2. If prompted, enter your login information
+    3. Once redirected to Vito's website, copy the URL
+    4. Paste the URL into the text box below
+""")
 
 link = "https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=2389P9&redirect_uri=https%3A%2F%2Fvitovitals.org&scope=heartrate%20sleep%20oxygen_saturation%20respiratory_rate%20temperature&expires_in=604800"
 st.markdown(f'[Authorize with Fitbit]({link})', unsafe_allow_html=True)
 st.caption(link)
 
-fitbitResponse = st.text_input("Enter Response From Fitbit Authorization")
+response_container = st.container()
+fitbit_response = response_container.text_input("Enter Response From Fitbit Authorization")
 
-if fitbitResponse != "":
-    parsed = fitbitResponse.split("#access_token=")[1]
+preview = st.expander("Data Preview")
+preview_placeholder = preview.empty()
+preview_placeholder.write("No data to display")
 
-    token = parsed.split("&user_id")[0]
-    st.write(token)
-    user_id = parsed.split("&user_id=")[1].split("&")[0]
-    st.write(user_id)
+fitbit_data = FitbitData()
 
-    st.write(get_heart_rate(token, user_id, "2020-01-01", "2022-01-08"))
-    st.write(get_breathing_rate(token, user_id, "2020-01-01", "2022-01-08"))
-    st.write(get_heart_rate_variability(token, user_id, "2020-01-01", "2022-01-08"))
-    st.write(get_oxygen_saturation(token, user_id, "2020-01-01", "2022-01-08"))
+if fitbit_response != "":
+    try:
+        parsed = fitbit_response.split("#access_token=")[1]
+        token = parsed.split("&user_id")[0]
+        user_id = parsed.split("&user_id=")[1].split("&")[0]
+
+        preview_container = preview_placeholder.container()
+        preview_container.markdown(f"**User ID:**  \n{user_id}")
+        preview_container.markdown(f"**Access Token:**  \n{token}")
+
+        fitbit_data.heart_rate = get_heart_rate(token, user_id, "2022-01-01", "2022-08-01")
+        fitbit_data.heart_rate_variability = get_heart_rate_variability(token, user_id, "2022-01-01", "2022-08-01")
+        fitbit_data.breathing_rate = get_breathing_rate(token, user_id, "2022-01-01", "2022-08-01")
+        fitbit_data.oxygen_saturation = get_oxygen_saturation(token, user_id, "2022-01-01", "2022-08-01")
+
+        preview_container.write(fitbit_data.heart_rate)
+        preview_container.write(fitbit_data.heart_rate_variability)
+        preview_container.write(fitbit_data.breathing_rate)
+        preview_container.write(fitbit_data.oxygen_saturation)
+    except IndexError:
+        response_container.error("Invalid input")
+
+col1, col2 = st.columns([1, 6])
+if col1.button("Submit") and not fitbit_data.is_empty():
+    with col2:
+        with st.spinner("Uploading data..."):
+            fire.upload_fitbit_data(fitbit_data)
+    st.success("Data uploaded successfully!")
