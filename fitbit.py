@@ -39,10 +39,10 @@ def get(access_token, user_id, data, start, end, days_per_request=0):
                     key = next(iter(response))
                     response[key].extend(current_response[key])
             return response
-    return requests.get(
+    return pd.DataFrame.from_dict(requests.get(
         URL.format(user_id=user_id, data=data, start=start, end=end),
         auth=BearerAuth(access_token)
-    ).json()
+    ).json())
 
 
 def get_heart_rate(access_token, user_id, start, end):

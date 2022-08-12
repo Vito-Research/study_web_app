@@ -55,6 +55,7 @@ if fitbitResponse != "":
     st.write(anchorDate)
     if str(datetime.datetime.strftime(date, '%Y-%m-%d')) != str(anchorDate):
         hr = get_heart_rate(token, user_id, "2020-01-01", "2022-08-11")
+        st.table(hr)
         br = get_breathing_rate(token, user_id, "2020-01-01", "2022-08-11")
         hrv = get_heart_rate_variability(token, user_id, "2020-01-01", "2022-01-08")
         o2 = get_oxygen_saturation(token, user_id, "2020-01-01", "2022-01-08")
@@ -62,9 +63,3 @@ if fitbitResponse != "":
         results(date, hr, hrv, br, o2)
     
     
-        
-
-    # st.write()
-    # st.write(get_breathing_rate(token, user_id, "2020-01-01", "2022-08-11"))
-    # st.write(get_heart_rate_variability(token, user_id, "2020-01-01", "2022-01-08"))
-    # st.write(get_oxygen_saturation(token, user_id, "2020-01-01", "2022-01-08"))

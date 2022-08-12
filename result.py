@@ -3,9 +3,9 @@ import pandas as pd
 def results(date, hrDF, hrvDF, brDF, o2DF):
     def analyze(df, title):
         
-        df["startTime"] = pd.to_datetime(df["startDate"]).dt.hour
-        df["startDate"] = pd.to_datetime(df["startDate"]).dt.date
-        df["startWeek"] = pd.to_datetime(df["startDate"]).dt.week
+        df["startTime"] = pd.to_datetime(df["dateTime"]).dt.hour
+        df["startDate"] = pd.to_datetime(df["dateTime"]).dt.date
+        df["startWeek"] = pd.to_datetime(df["dateTime"]).dt.week
 
         # aWeekAgo = pd.to_datetime(datetime.datetime.now() + datetime.timedelta(days= daysBefore))
        
