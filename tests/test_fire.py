@@ -44,8 +44,11 @@ class TestFire(unittest.TestCase):
         }
 
         fire.init(get_certificate_path())
-        doc_ref = firestore.client().collection("test").document(str(uuid.uuid4()))
-        fire.upload_heart_rate(doc_ref, data)
+        db = firestore.client()
+        doc_ref = db.collection("test").document(str(uuid.uuid4()))
+        batch = fire.Batch(db)
+        fire.upload_heart_rate(batch, doc_ref, data)
+        batch.commit()
 
         hr_snapshot = next(doc_ref.collection("heartRate").stream())
         hr = hr_snapshot.to_dict()
@@ -82,8 +85,11 @@ class TestFire(unittest.TestCase):
         }
 
         fire.init(get_certificate_path())
-        doc_ref = firestore.client().collection("test").document(str(uuid.uuid4()))
-        fire.upload_heart_rate_variability(doc_ref, data)
+        db = firestore.client()
+        doc_ref = db.collection("test").document(str(uuid.uuid4()))
+        batch = fire.Batch(db)
+        fire.upload_heart_rate_variability(batch, doc_ref, data)
+        batch.commit()
 
         hrv = next(doc_ref.collection("heartRateVariability").stream()).to_dict()
         self.assertEqual("2021-10-25", hrv["dateTime"])
@@ -105,8 +111,11 @@ class TestFire(unittest.TestCase):
         }
 
         fire.init(get_certificate_path())
-        doc_ref = firestore.client().collection("test").document(str(uuid.uuid4()))
-        fire.upload_breathing_rate(doc_ref, data)
+        db = firestore.client()
+        doc_ref = db.collection("test").document(str(uuid.uuid4()))
+        batch = fire.Batch(db)
+        fire.upload_breathing_rate(batch, doc_ref, data)
+        batch.commit()
 
         br = next(doc_ref.collection("breathingRate").stream()).to_dict()
         self.assertEqual("2021-10-25", br["dateTime"])
@@ -127,8 +136,11 @@ class TestFire(unittest.TestCase):
         ]
 
         fire.init(get_certificate_path())
-        doc_ref = firestore.client().collection("test").document(str(uuid.uuid4()))
-        fire.upload_oxygen_saturation(doc_ref, data)
+        db = firestore.client()
+        doc_ref = db.collection("test").document(str(uuid.uuid4()))
+        batch = fire.Batch(db)
+        fire.upload_oxygen_saturation(batch, doc_ref, data)
+        batch.commit()
 
         spo2 = next(doc_ref.collection("oxygenSaturation").stream()).to_dict()
         self.assertEqual("2021-10-01", spo2["dateTime"])
