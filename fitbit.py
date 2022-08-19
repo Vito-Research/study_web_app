@@ -7,6 +7,19 @@ from pandas import json_normalize
 URL = "https://api.fitbit.com/1/user/{user_id}/{data}/date/{start}/{end}.json"
 
 
+class FitbitData:
+
+    def __init__(self, heart_rate=None, heart_rate_variability=None, breathing_rate=None, oxygen_saturation=None):
+        self.heart_rate = heart_rate
+        self.heart_rate_variability = heart_rate_variability
+        self.breathing_rate = breathing_rate
+        self.oxygen_saturation = oxygen_saturation
+
+    def is_empty(self):
+        return (not self.heart_rate and not self.heart_rate_variability and
+                not self.breathing_rate and not self.oxygen_saturation)
+
+
 class BearerAuth(requests.auth.AuthBase):
     def __init__(self, token):
         self.token = token
