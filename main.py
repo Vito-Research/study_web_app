@@ -5,7 +5,8 @@ from fitbit import *
 
 
 def main():
-    fire.init(st.secrets["google"])
+    key_dict = json.loads(st.secrets['textkey'])
+    fire.init(key_dict)
 
     st.image("Vito.png")
     st.header("Vito Study")
