@@ -1,8 +1,9 @@
 import streamlit as st
-
 import fire
 from fitbit import *
-
+from result import results
+from datetime import date
+import datetime
 
 def main():
     fire.init("serviceAccount.json")
@@ -72,6 +73,21 @@ def main():
             preview_container.write(fitbit_data.heart_rate_variability)
             preview_container.write(fitbit_data.breathing_rate)
             preview_container.write(fitbit_data.oxygen_saturation)
+            
+            anchorDate = datetime.datetime.strftime(date.today(), '%Y-%m-%d')
+            date = st.date_input("Enter date that you had an infection")
+            st.write(str(datetime.datetime.strftime(date, '%Y-%m-%d')))
+            st.write(anchorDate)
+            if str(datetime.datetime.strftime(date, '%Y-%m-%d')) != str(anchorDate):
+                st.table(fitbit_data.heart_rate)
+
+                results(
+                    date, 
+                    fitbit_data.heart_rate, 
+                    fitbit_data.heart_rate_variability, 
+                    fitbit_data.breathing_rate, 
+                    fitbit_data.oxygen_saturation
+                )
         except IndexError:
             response_container.error("Invalid input")
 
