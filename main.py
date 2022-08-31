@@ -5,7 +5,7 @@ from fitbit import *
 
 
 def main():
-    fire.init("serviceAccount.json")
+    fire.init(st.secrets["google"])
 
     st.image("Vito.png")
     st.header("Vito Study")
