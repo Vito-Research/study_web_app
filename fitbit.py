@@ -58,16 +58,27 @@ def get(access_token, user_id, data, start, end, days_per_request=0):
 
 
 def get_heart_rate(access_token, user_id, start, end):
-    return get(access_token, user_id, "activities/heart", start, end)
-
+    try:
+        return get(access_token, user_id, "activities/heart", start, end)
+    except:
+        return
 
 def get_oxygen_saturation(access_token, user_id, start, end):
-    return get(access_token, user_id, "spo2", start, end)
+    try:
+        return get(access_token, user_id, "spo2", start, end)
+    except:
+        return
 
 
 def get_breathing_rate(access_token, user_id, start, end):
-    return get(access_token, user_id, "br", start, end, days_per_request=30)
+    try:
+        return get(access_token, user_id, "br", start, end, days_per_request=30)
+    except:
+        return
 
 
 def get_heart_rate_variability(access_token, user_id, start, end):
-    return get(access_token, user_id, "hrv", start, end, days_per_request=30)
+    try:
+        return get(access_token, user_id, "hrv", start, end, days_per_request=30)
+    except:
+        return
