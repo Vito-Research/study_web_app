@@ -1,7 +1,8 @@
 from datetime import timedelta
-
+import streamlit as st
 import pandas as pd
 import requests
+from pandas import json_normalize
 
 URL = "https://api.fitbit.com/1/user/{user_id}/{data}/date/{start}/{end}.json"
 
@@ -31,7 +32,7 @@ class BearerAuth(requests.auth.AuthBase):
 def get(access_token, user_id, data, start, end, days_per_request=0):
     if days_per_request > 0:
         dates = [d.strftime("%Y-%m-%d") for d in pd.date_range(start=start, end=end, freq=f"{days_per_request}D")]
-
+    
         if dates[len(dates) - 1] != end:
             dates.append((pd.to_datetime(end) + timedelta(days=1)).strftime("%Y-%m-%d"))
         if len(dates) > 1:
@@ -51,10 +52,10 @@ def get(access_token, user_id, data, start, end, days_per_request=0):
                     key = next(iter(response))
                     response[key].extend(current_response[key])
             return response
-    return requests.get(
+    return pd.DataFrame.from_dict(requests.get(
         URL.format(user_id=user_id, data=data, start=start, end=end),
         auth=BearerAuth(access_token)
-    ).json()
+    ).json())
 
 
 def get_heart_rate(access_token, user_id, start, end):

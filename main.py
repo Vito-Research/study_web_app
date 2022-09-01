@@ -53,6 +53,7 @@ def main():
     preview_placeholder.write("No data to display")
 
     fitbit_data = FitbitData()
+
     date = st.date_input("Enter date that you had an infection")
     anchorDate = datetime.datetime.strftime(date.today(), '%Y-%m-%d')
     if str(datetime.datetime.strftime(date, '%Y-%m-%d')) != str(anchorDate):
@@ -87,7 +88,6 @@ def main():
                 with st.spinner("Uploading data..."):
                     fire.upload_fitbit_data(fitbit_data)
             st.success("Data uploaded successfully!")
-            
 
 
 if __name__ == "__main__":
