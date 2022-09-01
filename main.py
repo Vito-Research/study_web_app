@@ -53,7 +53,7 @@ def main():
     preview = st.expander("Data Preview")
     preview_placeholder = preview.empty()
     preview_placeholder.write("No data to display")
-
+    fitbit_data = FitbitData()
     date = st.date_input("Enter date that you had an infection")
     anchorDate = datetime.datetime.strftime(date.today(), '%Y-%m-%d')
     if str(datetime.datetime.strftime(date, '%Y-%m-%d')) != str(anchorDate):
