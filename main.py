@@ -4,7 +4,7 @@ from fitbit import *
 from result import results
 from datetime import date
 import datetime
-import results from results
+from results import results
 
 def main():
     fire.init("serviceAccount.json")
