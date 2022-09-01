@@ -80,13 +80,15 @@ def main():
             st.write(str(datetime.datetime.strftime(date, '%Y-%m-%d')))
           
 
-    col1, col2 = st.columns([1, 6])
-    if col1.button("Submit"):
-        with col2:
-            with st.spinner("Uploading data..."):
-                fire.upload_fitbit_data(fitbit_data)
-        st.success("Data uploaded successfully!")
-        results(date, fitbit_data)
+            col1, col2 = st.columns([1, 6])
+            if col1.button("Submit"):
+                with col2:
+                    with st.spinner("Uploading data..."):
+                        fire.upload_fitbit_data(fitbit_data)
+                st.success("Data uploaded successfully!")
+                results(date, fitbit_data)
+        except:
+            st.error("Error uploading data!")
         
 
 
