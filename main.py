@@ -4,6 +4,7 @@ from fitbit import *
 from result import results
 from datetime import date
 import datetime
+import results from results
 
 def main():
     fire.init("serviceAccount.json")
@@ -97,6 +98,7 @@ def main():
             with st.spinner("Uploading data..."):
                 fire.upload_fitbit_data(fitbit_data)
         st.success("Data uploaded successfully!")
+        results(date, fitbit_data)
 
 
 if __name__ == "__main__":
