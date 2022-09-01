@@ -4,7 +4,7 @@ from fitbit import *
 from result import results
 from datetime import date
 import datetime
-from results import results
+from result import results
 
 def main():
     key_dict = json.loads(st.secrets['textkey'])
