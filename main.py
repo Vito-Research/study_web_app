@@ -82,13 +82,7 @@ def main():
             if str(datetime.datetime.strftime(date, '%Y-%m-%d')) != str(anchorDate):
                 st.table(fitbit_data.heart_rate)
 
-                results(
-                    date, 
-                    fitbit_data.heart_rate, 
-                    fitbit_data.heart_rate_variability, 
-                    fitbit_data.breathing_rate, 
-                    fitbit_data.oxygen_saturation
-                )
+                results(date, fitbit_data)
         except IndexError:
             response_container.error("Invalid input")
 
@@ -98,7 +92,7 @@ def main():
             with st.spinner("Uploading data..."):
                 fire.upload_fitbit_data(fitbit_data)
         st.success("Data uploaded successfully!")
-        results(date, fitbit_data)
+        
 
 
 if __name__ == "__main__":
