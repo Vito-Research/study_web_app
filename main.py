@@ -78,13 +78,7 @@ def main():
             anchorDate = datetime.datetime.strftime(date.today(), '%Y-%m-%d')
             date = st.date_input("Enter date that you had an infection")
             st.write(str(datetime.datetime.strftime(date, '%Y-%m-%d')))
-            st.write(anchorDate)
-            if str(datetime.datetime.strftime(date, '%Y-%m-%d')) != str(anchorDate):
-                st.table(fitbit_data.heart_rate)
-
-                results(date, fitbit_data)
-        except IndexError:
-            response_container.error("Invalid input")
+          
 
     col1, col2 = st.columns([1, 6])
     if col1.button("Submit") and not fitbit_data.is_empty():
@@ -92,6 +86,7 @@ def main():
             with st.spinner("Uploading data..."):
                 fire.upload_fitbit_data(fitbit_data)
         st.success("Data uploaded successfully!")
+        results(date, fitbit_data)
         
 
 
