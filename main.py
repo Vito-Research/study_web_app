@@ -88,8 +88,7 @@ def main():
                 with st.spinner("Uploading data..."):
                     fire.upload_fitbit_data(fitbit_data)
             st.success("Data uploaded successfully!")
-        except:
-            st.error("Error uploading data!")
+        
         
 
 
