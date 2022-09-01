@@ -7,7 +7,8 @@ import datetime
 from results import results
 
 def main():
-    fire.init("serviceAccount.json")
+    key_dict = json.loads(st.secrets['textkey'])
+    fire.init(key_dict)
 
     st.image("Vito.png")
     st.header("Vito Study")
