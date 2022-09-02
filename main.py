@@ -91,8 +91,6 @@ def main():
                 results(date, fitbit_data)
         except:
             st.error("Error uploading data!")
-        
-
 
 if __name__ == "__main__":
     main()
