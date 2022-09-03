@@ -18,3 +18,5 @@ pip3 install -r requirements.txt
 streamlit run main.py
 ```
 
+## To see working model of Study Web App
+Go to this link - [Study Web App](https://vito-research-study-web-app-main-4ent4s.streamlitapp.com/)
