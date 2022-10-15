@@ -53,6 +53,9 @@ def get(access_token, user_id, data, start, end, days_per_request=0):
                 else:
                     key = next(iter(response))
                     response[key].extend(current_response[key])
+                if "Too Many" in response:
+                    st.warning("Too many requests")
+                    break
             return response
     return pd.DataFrame.from_dict(requests.get(
         URL.format(user_id=user_id, data=data, start=start, end=end),
