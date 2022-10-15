@@ -32,31 +32,35 @@ class BearerAuth(requests.auth.AuthBase):
 
 
 def get(access_token, user_id, data, start, end, days_per_request=0):
-    if days_per_request > 0:
-        dates = [d.strftime("%Y-%m-%d") for d in pd.date_range(start=start, end=end, freq=f"{days_per_request}D")]
-    
-        if dates[len(dates) - 1] != end:
-            dates.append((pd.to_datetime(end) + timedelta(days=1)).strftime("%Y-%m-%d"))
-        if len(dates) > 1:
-            response = {}
+    warning = False
+    if not warning:
+        if days_per_request > 0:
+            dates = [d.strftime("%Y-%m-%d") for d in pd.date_range(start=start, end=end, freq=f"{days_per_request}D")]
+        
+            if dates[len(dates) - 1] != end:
+                dates.append((pd.to_datetime(end) + timedelta(days=1)).strftime("%Y-%m-%d"))
+            if len(dates) > 1:
+                response = {}
 
-            for i in range(0, len(dates) - 1):
-                start_date = dates[i]
-                end_date = (pd.to_datetime(dates[i + 1]) - timedelta(days=1)).strftime("%Y-%m-%d")
-                current_response = requests.get(
-                    URL.format(user_id=user_id, data=data, start=start_date, end=end_date),
-                    auth=BearerAuth(access_token)
-                ).json()
-
-                if not response:
-                    response = current_response
-                else:
-                    key = next(iter(response))
-                    response[key].extend(current_response[key])
-                if "Too Many" in response:
-                    st.warning("Too many requests")
-                    break
-            return response
+                for i in range(0, len(dates) - 1):
+                    start_date = dates[i]
+                    end_date = (pd.to_datetime(dates[i + 1]) - timedelta(days=1)).strftime("%Y-%m-%d")
+                    current_response = requests.get(
+                        URL.format(user_id=user_id, data=data, start=start_date, end=end_date),
+                        auth=BearerAuth(access_token)
+                    ).json()
+                    if "Too Many Requests" in current_response:
+                        warning = True
+                        st.warning("Too many requests")
+                        break
+                    if not response:
+                        response = current_response
+                    else:
+                        key = next(iter(response))
+                        response[key].extend(current_response[key])
+                    
+                        break
+                return response
     return pd.DataFrame.from_dict(requests.get(
         URL.format(user_id=user_id, data=data, start=start, end=end),
         auth=BearerAuth(access_token)
