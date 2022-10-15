@@ -16,8 +16,7 @@ class FitbitData:
         self.oxygen_saturation = oxygen_saturation
 
     def is_empty(self):
-        return (not self.heart_rate and not self.heart_rate_variability and
-                not self.breathing_rate and not self.oxygen_saturation)
+        return (not self.heart_rate)
 
 
 class BearerAuth(requests.auth.AuthBase):
