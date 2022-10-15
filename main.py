@@ -85,7 +85,7 @@ def main():
                 response_container.error("Invalid input")
 
         col1, col2 = st.columns([1, 6])
-        if col1.button("Submit") and not fitbit_data.is_empty():
+        if col1.button("Submit"):
             with col2:
                 with st.spinner("Uploading data..."):
                     fire.upload_fitbit_data(fitbit_data)
