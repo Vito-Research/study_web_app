@@ -125,7 +125,7 @@ def main():
                 st.success("Data uploaded successfully!")
                 results(date, fitbit_data)
         except:
-
+            st.write()
 
 if __name__ == "__main__":
     main()
