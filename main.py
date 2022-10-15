@@ -69,7 +69,7 @@ def main():
                 preview_container.markdown(f"**User ID:**  \n{user_id}")
                 preview_container.markdown(f"**Access Token:**  \n{token}")
                 
-                start_date = datetime.datetime.strftime(pd.to_datetime(date + datetime.timedelta(days= -90)), '%Y-%m-%d')
+                start_date = datetime.datetime.strftime(pd.to_datetime(date + datetime.timedelta(days= -60)), '%Y-%m-%d')
                 end_date = datetime.datetime.strftime(pd.to_datetime(date + datetime.timedelta(days= 20)), '%Y-%m-%d')
 
                 fitbit_data.heart_rate = get_heart_rate(token, user_id, start_date, end_date)
@@ -85,7 +85,7 @@ def main():
                 response_container.error("Invalid input")
 
         col1, col2 = st.columns([1, 6])
-        if col1.button("Submit"):
+        if col1.button("Submit") and not fitbit_data.is_empty():
             with col2:
                 with st.spinner("Uploading data..."):
                     fire.upload_fitbit_data(fitbit_data)
