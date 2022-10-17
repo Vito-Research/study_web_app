@@ -47,7 +47,7 @@ def main():
     st.caption(link)
 
     response_container = st.container()
-    fitbit_response = st.experimental_get_query_params()["accessToken"]#response_container.text_input("Enter Response From Fitbit Authorization")
+    fitbit_response = st.experimental_get_query_params()["#accessToken"]#response_container.text_input("Enter Response From Fitbit Authorization")
 
     preview = st.expander("Data Preview")
     preview_placeholder = preview.empty()
