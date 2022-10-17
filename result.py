@@ -29,20 +29,20 @@ def results(date, data):
     st.caption("We are believe in transparency, therefore we believe that you should see your trends in realtime.  This is not a medical diagnosis, rather general trends while you had an illness.")
 
     preview = st.expander("Parsed Data Preview")
-    preview.write(data)
+    preview.write(pd.DataFrame([vars(f) for f in data]))
     try:
-        analyze(pd.read_json(data.heart_rate), "Heart Rate")
+        analyze(pd.DataFrame([vars(f) for f in data.heart_rate]), "Heart Rate")
     except:
             st.error("Something went wrong")
     try:
-        analyze(pd.read_json(data.heart_rate_variability), "Heart Rate Variability Rate")
+        analyze(pd.read_json(pd.DataFrame([vars(f) for f in data.heart_rate_variability])), "Heart Rate Variability Rate")
     except:
             st.error("Something went wrong")
     try:
-        analyze(pd.read_json(data.breathing_rate), "Breathing Rate")
+        analyze(pd.read_json(pd.DataFrame([vars(f) for f in data.breathing_rate])), "Breathing Rate")
     except:
             st.error("Something went wrong")
     try:
-        analyze(pd.read_json(data.oxygen_saturation), "Blood Oxygen %")
+        analyze(pd.DataFrame([vars(f) for f in data.oxygen_saturation]), "Blood Oxygen %")
     except:
             st.error("Something went wrong")
