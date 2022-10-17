@@ -62,7 +62,7 @@ def get(access_token, user_id, data, start, end, days_per_request=0):
                         break
                 return response
     return pd.DataFrame.from_dict(requests.get(
-        URL.format(user_id=user_id, data=data, start=start, end=end),
+        URL.format(data=data, start=start, end=end),
         auth=BearerAuth(access_token)
     ).json())
 
