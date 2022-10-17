@@ -5,6 +5,8 @@ from fitbit import *
 import datetime
 from result import results
 import json
+from streamlit.components.v1 import html
+
 def main():
     key_dict = json.loads(st.secrets['textkey'])
     fire.init(key_dict)
@@ -42,7 +44,7 @@ def main():
         4. Paste the URL into the text box below
     """)
 
-    link = "https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=238Y7Z&redirect_uri=https://www.vitovitals.org&scope=heartrate%20sleep%20oxygen_saturation%20respiratory_rate%20temperature&expires_in=604800"
+    link = "https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=238Y7Z&redirect_uri=https://www.vitovitals.org&scope=heartrate%20sleep%20oxygen_saturation%20respiratory_rate%20temperature&expires_in=604800"
     st.markdown(f'[Authorize with Fitbit]({link})', unsafe_allow_html=True)
     st.caption(link)
 
