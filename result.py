@@ -30,7 +30,7 @@ def results(date, data):
     st.caption("We are believe in transparency, therefore we believe that you should see your trends in realtime.  This is not a medical diagnosis, rather general trends while you had an illness.")
 
     try:
-        analyze(pd.DataFrame.from_dict(json.loads(data.heart_rate)), "Heart Rate")
+        analyze(pd.DataFrame.from_dict(data.heart_rate), "Heart Rate")
     except:
             st.error("Something went wrong")
     try:
