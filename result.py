@@ -28,8 +28,8 @@ def results(date, data):
     # st.metric("The algorithm detected your infection days prior", accuracy)
     st.caption("We are believe in transparency, therefore we believe that you should see your trends in realtime.  This is not a medical diagnosis, rather general trends while you had an illness.")
 
-    with st.expander():
-        st.table(data)
+    preview = st.expander("Parsed Data Preview")
+    preview.table(data)
     try:
         analyze(pd.read_json(data.heart_rate), "Heart Rate")
     except:
