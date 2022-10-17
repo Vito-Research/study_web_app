@@ -31,7 +31,7 @@ class BearerAuth(requests.auth.AuthBase):
         return r
 
 
-def get(access_token, user_id, data, start, end, days_per_request=0):
+def get(access_token, data, start, end, days_per_request=0):
     warning = False
     if not warning:
         if days_per_request > 0:
