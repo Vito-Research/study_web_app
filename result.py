@@ -1,25 +1,27 @@
 import streamlit as st
 import pandas as pd
+import datetime
 def results(date, data):
-    def analyze(df, title):
-        
-        df["startTime"] = pd.to_datetime(df["dateTime"]).dt.hour
-        df["startDate"] = pd.to_datetime(df["dateTime"]).dt.date
-        df["startWeek"] = pd.to_datetime(df["dateTime"]).dt.week
+    def analyze(df, title = "", unit = ""):
+        try:
+            df["startTime"] = pd.to_datetime(df["dateTime"]).dt.hour
+            df["startDate"] = pd.to_datetime(df["dateTime"]).dt.date
+            df["startWeek"] = pd.to_datetime(df["dateTime"]).dt.week
 
-        aWeekAgo = pd.to_datetime(date + datetime.timedelta(days= -4))
-       
-        aWeekAfter = pd.to_datetime(date + datetime.timedelta(days= -4))
-        dfBeforeSick = df[df["startDate"] > aWeekAgo and df["startDate"] < aWeekAfter]
-
-        dfAfterSick = df[df["startDate"] < aWeekAgo or df["startDate"] > aWeekAfter]
+            aWeekAgo = pd.to_datetime(date + datetime.timedelta(days= -4))
         
-        st.write(unit + " Before Sick: " + str(dfBeforeSick["value"].median()))
-        st.write(unit + " Three days prior to symptoms: " + str(dfAfterSick["value"].median()))
-        
-        groupedByWeek = df.groupby(df["startWeek"])['value'].median()
-        st.line_chart(groupedByWeek)
+            aWeekAfter = pd.to_datetime(date + datetime.timedelta(days= -4))
+            dfBeforeSick = df[df["startDate"] > aWeekAgo and df["startDate"] < aWeekAfter]
 
+            dfAfterSick = df[df["startDate"] < aWeekAgo or df["startDate"] > aWeekAfter]
+            
+            st.write(unit + " Before Sick: " + str(dfBeforeSick["value"].median()))
+            st.write(unit + " Three days prior to symptoms: " + str(dfAfterSick["value"].median()))
+            
+            groupedByWeek = df.groupby(df["startWeek"])['value'].median()
+            st.line_chart(groupedByWeek)
+        except:
+            st.error("Something went wrong")
 
 
     st.header("Results")

@@ -89,9 +89,9 @@ def main():
             with col2:
                 with st.spinner("Uploading data..."):
                     fire.upload_fitbit_data(fitbit_data)
-                    results(data=fitbit_data, date=date)
+                    
             st.success("Data uploaded successfully!")
-
+            results(date=date, data=fitbit_data)
 
 if __name__ == "__main__":
     main()
