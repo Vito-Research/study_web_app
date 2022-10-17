@@ -60,7 +60,7 @@ def main():
     if str(datetime.datetime.strftime(date, '%Y-%m-%d')) != str(anchorDate):
    
             try:
-                token = st.experimental_get_query_params().get("#accessToken")
+                token = st.experimental_get_query_params().get("accessToken")
                 user_id = st.experimental_get_query_params().get("user_id")
 
                 preview_container = preview_placeholder.container()
