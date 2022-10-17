@@ -67,17 +67,17 @@ def get(access_token, data, start, end, days_per_request=0):
     ).json())
 
 
-def get_heart_rate(access_token, user_id, start, end):
+def get_heart_rate(access_token, start, end):
     return get(access_token, "activities/heart", start, end)
 
 
-def get_oxygen_saturation(access_token, user_id, start, end):
+def get_oxygen_saturation(access_token, start, end):
     return get(access_token, "spo2", start, end)
 
 
-def get_breathing_rate(access_token, user_id, start, end):
+def get_breathing_rate(access_token, start, end):
     return get(access_token, "br", start, end, days_per_request=30)
 
 
-def get_heart_rate_variability(access_token, user_id, start, end):
+def get_heart_rate_variability(access_token, start, end):
     return get(access_token, "hrv", start, end, days_per_request=30)
