@@ -3,7 +3,7 @@ import uuid
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
-
+import streamlit as st
 
 class Batch:
     MAX_OPERATIONS = 500
@@ -83,30 +83,38 @@ def upload_heart_rate(batch, doc_ref, data):
 
 
 def upload_heart_rate_variability(batch, doc_ref, data):
-    for hrv in data[next(iter(data))]:
-        hrv_ref = doc_ref.collection("heartRateVariability").document()
-        batch.set(hrv_ref, {
-            "dateTime": hrv["dateTime"],
-            "dailyRmssd": hrv["value"]["dailyRmssd"],
-            "deepRmssd": hrv["value"]["deepRmssd"]
-        })
+    try:
+        for hrv in data[next(iter(data))]:
+            hrv_ref = doc_ref.collection("heartRateVariability").document()
+            batch.set(hrv_ref, {
+                "dateTime": hrv["dateTime"],
+                "dailyRmssd": hrv["value"]["dailyRmssd"],
+                "deepRmssd": hrv["value"]["deepRmssd"]
+            })
+    except:
+        st.error("No heart rate variability")
 
 
 def upload_breathing_rate(batch, doc_ref, data):
-    for br in data[next(iter(data))]:
-        br_ref = doc_ref.collection("breathingRate").document()
-        batch.set(br_ref, {
-            "dateTime": br["dateTime"],
-            "breathingRate": br["value"]["breathingRate"]
-        })
-
+    try:
+        for br in data[next(iter(data))]:
+            br_ref = doc_ref.collection("breathingRate").document()
+            batch.set(br_ref, {
+                "dateTime": br["dateTime"],
+                "breathingRate": br["value"]["breathingRate"]
+            })
+    except:
+        st.error("No breathing rate")
 
 def upload_oxygen_saturation(batch, doc_ref, data):
-    for spo2 in data:
-        spo2_ref = doc_ref.collection("oxygenSaturation").document()
-        batch.set(spo2_ref, {
-            "dateTime": spo2["dateTime"],
-            "avg": spo2["value"]["avg"],
-            "min": spo2["value"]["min"],
-            "max": spo2["value"]["max"]
-        })
+    try:
+        for spo2 in data:
+            spo2_ref = doc_ref.collection("oxygenSaturation").document()
+            batch.set(spo2_ref, {
+                "dateTime": spo2["dateTime"],
+                "avg": spo2["value"]["avg"],
+                "min": spo2["value"]["min"],
+                "max": spo2["value"]["max"]
+            })
+    except:
+        st.error("No Blood O2")
