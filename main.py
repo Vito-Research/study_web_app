@@ -65,7 +65,7 @@ def main():
                 parms = st.experimental_get_query_params()
         
                 token = parms.get("code")[0]
-                user_id = parms.get("user_id")[0]
+                user_id = ""
 
                 preview_container = preview_placeholder.container()
                 preview_container.markdown(f"**User ID:**  \n{user_id}")
