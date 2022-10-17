@@ -4,7 +4,7 @@ import pandas as pd
 import requests
 from pandas import json_normalize
 
-URL = "https://api.fitbit.com/1/user/{user_id}/{data}/date/{start}/{end}.json"
+URL = "https://api.fitbit.com/1/user/~/{data}/date/{start}/{end}.json"
 
 
 class FitbitData:
