@@ -28,8 +28,6 @@ def results(date, data):
     # st.metric("The algorithm detected your infection days prior", accuracy)
     st.caption("We are believe in transparency, therefore we believe that you should see your trends in realtime.  This is not a medical diagnosis, rather general trends while you had an illness.")
 
-    preview = st.expander("Parsed Data Preview")
-    preview.write(pd.DataFrame([vars(f) for f in data]))
     try:
         analyze(pd.DataFrame([vars(f) for f in data.heart_rate]), "Heart Rate")
     except:
