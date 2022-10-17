@@ -3,10 +3,9 @@ import pandas as pd
 import datetime
 import json
 def results(date, data):
-    def analyze(df, title = "", unit = ""):
+    def analyze(df, title = "", unit = "", col="restingHeartRate"):
        
             st.header(title)
-            df["startTime"] = pd.to_datetime(df["dateTime"]).dt.hour
             df["startDate"] = pd.to_datetime(df["dateTime"]).dt.date
             df["startWeek"] = pd.to_datetime(df["dateTime"]).dt.week
 
@@ -17,10 +16,10 @@ def results(date, data):
 
             dfAfterSick = df[df["startDate"] < aWeekAgo or df["startDate"] > aWeekAfter]
             
-            st.write(unit + " Before Sick: " + str(dfBeforeSick["value"].median()))
-            st.write(unit + " Three days prior to symptoms: " + str(dfAfterSick["value"].median()))
+            st.write(unit + " Before Sick: " + str(dfBeforeSick["value"][col].median()))
+            st.write(unit + " Three days prior to symptoms: " + str(dfAfterSick["value"][col].median()))
             
-            groupedByWeek = df.groupby(df["startWeek"])['value'].median()
+            groupedByWeek = df.groupby(df["startWeek"])["value"][col].median()
             st.line_chart(groupedByWeek)
        
 
@@ -34,14 +33,15 @@ def results(date, data):
     except:
             st.error("Something went wrong")
     try:
-        analyze(pd.read_json(pd.DataFrame([vars(f) for f in data.heart_rate_variability])), "Heart Rate Variability Rate")
+        
+        analyze(pd.read_json(pd.DataFrame(pd.DataFrame.from_dict(data.heart_rate_variability))), "Heart Rate Variability Rate", col="deepRmssd")
     except:
             st.error("Something went wrong")
     try:
-        analyze(pd.read_json(pd.DataFrame([vars(f) for f in data.breathing_rate])), "Breathing Rate")
+        analyze(pd.read_json(pd.DataFrame(pd.DataFrame.from_dict(data.breathing_rate))), "Breathing Rate", col="breathingRate")
     except:
             st.error("Something went wrong")
     try:
-        analyze(pd.DataFrame([vars(f) for f in data.oxygen_saturation]), "Blood Oxygen %")
+        analyze(pd.DataFrame(pd.DataFrame(pd.DataFrame.from_dict(data.blood_oxygen))), "Blood Oxygen %", col="")
     except:
             st.error("Something went wrong")
