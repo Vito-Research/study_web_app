@@ -62,14 +62,14 @@ def main():
         if fitbit_response != "":
             try:
                 parsed = fitbit_response
-                token = parsed.split("&user_id")[0]
-                user_id = parsed.split("&user_id=")[1].split("&")[0]
+                token = st.experimental_get_query_params().get("#accessToken")
+                user_id = st.experimental_get_query_params().get("#user_id")
 
                 preview_container = preview_placeholder.container()
                 preview_container.markdown(f"**User ID:**  \n{user_id}")
                 preview_container.markdown(f"**Access Token:**  \n{token}")
                 
-                start_date = datetime.datetime.strftime(pd.to_datetime(date + datetime.timedelta(days= -60)), '%Y-%m-%d')
+                start_date = datetime.datetime.strftime(pd.to_datetime(date + datetime.timedelta(days= -40)), '%Y-%m-%d')
                 end_date = datetime.datetime.strftime(pd.to_datetime(date + datetime.timedelta(days= 20)), '%Y-%m-%d')
 
                 fitbit_data.heart_rate = get_heart_rate(token, user_id, start_date, end_date)
