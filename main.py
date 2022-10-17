@@ -47,7 +47,6 @@ def main():
     st.caption(link)
 
     response_container = st.container()
-    fitbit_response = st.experimental_get_query_params().get("#accessToken")#response_container.text_input("Enter Response From Fitbit Authorization")
 
     preview = st.expander("Data Preview")
     preview_placeholder = preview.empty()
@@ -59,11 +58,10 @@ def main():
     date = st.date_input("Enter date that you had an infection")
     anchorDate = datetime.datetime.strftime(date.today(), '%Y-%m-%d')
     if str(datetime.datetime.strftime(date, '%Y-%m-%d')) != str(anchorDate):
-        if fitbit_response != "":
+   
             try:
-                parsed = fitbit_response
                 token = st.experimental_get_query_params().get("#accessToken")
-                user_id = st.experimental_get_query_params().get("#user_id")
+                user_id = st.experimental_get_query_params().get("user_id")
 
                 preview_container = preview_placeholder.container()
                 preview_container.markdown(f"**User ID:**  \n{user_id}")
@@ -84,48 +82,14 @@ def main():
             except IndexError:
                 response_container.error("Invalid input")
 
-        col1, col2 = st.columns([1, 6])
-        if col1.button("Submit") and not fitbit_data.is_empty():
+    col1, col2 = st.columns([1, 6])
+    if col1.button("Submit") and not fitbit_data.is_empty():
             with col2:
                 with st.spinner("Uploading data..."):
                     fire.upload_fitbit_data(fitbit_data)
+                    results(fitbit_data)
             st.success("Data uploaded successfully!")
 
-    if fitbit_response != "":
-        try:
-            parsed = fitbit_response.split("#access_token=")[1]
-            token = parsed.split("&user_id")[0]
-            user_id = parsed.split("&user_id=")[1].split("&")[0]
-
-            preview_container = preview_placeholder.container()
-            preview_container.markdown(f"**User ID:**  \n{user_id}")
-            preview_container.markdown(f"**Access Token:**  \n{token}")
-
-            fitbit_data.heart_rate = get_heart_rate(token, user_id, "2020-01-01", "2022-01-08")
-            fitbit_data.heart_rate_variability = get_heart_rate_variability(token, user_id, "2020-01-01", "2022-01-08")
-            fitbit_data.breathing_rate = get_breathing_rate(token, user_id, "2020-01-01", "2022-01-08")
-            fitbit_data.oxygen_saturation = get_oxygen_saturation(token, user_id, "2020-01-01", "2022-01-08")
-
-            preview_container.write(fitbit_data.heart_rate)
-            preview_container.write(fitbit_data.heart_rate_variability)
-            preview_container.write(fitbit_data.breathing_rate)
-            preview_container.write(fitbit_data.oxygen_saturation)
-            
-            anchorDate = datetime.datetime.strftime(date.today(), '%Y-%m-%d')
-            date = st.date_input("Enter date that you had an infection")
-            st.write(str(datetime.datetime.strftime(date, '%Y-%m-%d')))
-          
-
-            col1, col2 = st.columns([1, 6])
-            if col1.button("Submit"):
-                with col2:
-                    with st.spinner("Uploading data..."):
-                        st.write(fitbit_data)
-                        fire.upload_fitbit_data(fitbit_data)
-                st.success("Data uploaded successfully!")
-                results(date, fitbit_data)
-        except:
-            st.write()
 
 if __name__ == "__main__":
     main()
