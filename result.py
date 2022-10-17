@@ -3,7 +3,8 @@ import pandas as pd
 import datetime
 def results(date, data):
     def analyze(df, title = "", unit = ""):
-        try:
+       
+            st.header(title)
             df["startTime"] = pd.to_datetime(df["dateTime"]).dt.hour
             df["startDate"] = pd.to_datetime(df["dateTime"]).dt.date
             df["startWeek"] = pd.to_datetime(df["dateTime"]).dt.week
@@ -20,14 +21,28 @@ def results(date, data):
             
             groupedByWeek = df.groupby(df["startWeek"])['value'].median()
             st.line_chart(groupedByWeek)
-        except:
-            st.error("Something went wrong")
+       
 
 
     st.header("Results")
     # st.metric("The algorithm detected your infection days prior", accuracy)
     st.caption("We are believe in transparency, therefore we believe that you should see your trends in realtime.  This is not a medical diagnosis, rather general trends while you had an illness.")
-    analyze(pd.read_json(data.heart_rate), "Heart Rate")
-    analyze(pd.read_json(data.heart_rate_variability), "Heart Rate Variability Rate")
-    analyze(pd.read_json(data.breathing_rate), "Breathing Rate")
-    analyze(pd.read_json(data.oxygen_saturation), "Blood Oxygen %")
+
+    with st.expander():
+        st.table(data)
+    try:
+        analyze(pd.read_json(data.heart_rate), "Heart Rate")
+    except:
+            st.error("Something went wrong")
+    try:
+        analyze(pd.read_json(data.heart_rate_variability), "Heart Rate Variability Rate")
+    except:
+            st.error("Something went wrong")
+    try:
+        analyze(pd.read_json(data.breathing_rate), "Breathing Rate")
+    except:
+            st.error("Something went wrong")
+    try:
+        analyze(pd.read_json(data.oxygen_saturation), "Blood Oxygen %")
+    except:
+            st.error("Something went wrong")
