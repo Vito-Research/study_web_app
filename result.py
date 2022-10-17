@@ -29,7 +29,7 @@ def results(date, data):
     st.caption("We are believe in transparency, therefore we believe that you should see your trends in realtime.  This is not a medical diagnosis, rather general trends while you had an illness.")
 
     preview = st.expander("Parsed Data Preview")
-    preview.table(data)
+    preview.write(data)
     try:
         analyze(pd.read_json(data.heart_rate), "Heart Rate")
     except:
