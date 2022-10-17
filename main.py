@@ -61,7 +61,7 @@ def main():
     if str(datetime.datetime.strftime(date, '%Y-%m-%d')) != str(anchorDate):
         if fitbit_response != "":
             try:
-                parsed = fitbit_response.split("#access_token=")[1]
+                parsed = fitbit_response
                 token = parsed.split("&user_id")[0]
                 user_id = parsed.split("&user_id=")[1].split("&")[0]
 
