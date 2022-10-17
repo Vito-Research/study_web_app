@@ -61,7 +61,8 @@ def main():
    
             try:
                 parms = st.experimental_get_query_params()
-                token = parms.get("#access_token")
+                st.write(parms)
+                token = parms.get("access_token")
                 user_id = parms.get("user_id")
 
                 preview_container = preview_placeholder.container()
