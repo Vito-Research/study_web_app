@@ -46,7 +46,7 @@ def get(access_token, user_id, data, start, end, days_per_request=0):
                     start_date = dates[i]
                     end_date = (pd.to_datetime(dates[i + 1]) - timedelta(days=1)).strftime("%Y-%m-%d")
                     current_response = requests.get(
-                        URL.format(user_id=user_id, data=data, start=start_date, end=end_date),
+                        URL.format(data=data, start=start_date, end=end_date),
                         auth=BearerAuth(access_token)
                     ).json()
                     if "Too Many Requests" in current_response:
