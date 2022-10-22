@@ -57,7 +57,10 @@ def get(access_token, data, start, end, days_per_request=0):
                         response = current_response
                     else:
                         key = next(iter(response))
-                        response[key].extend(current_response[key])
+                        try:
+                            response[key].extend(current_response[key])
+                        except:
+                            warning("response error")
                     
                         break
                 return response
