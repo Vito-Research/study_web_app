@@ -65,6 +65,11 @@ def main():
                 parms = st.experimental_get_query_params()
         
                 token = parms.get("code")[0]
+                current_response = requests.get("https://api.fitbit.com/oauth2/token",
+                        auth=TokenAuth(token)
+                    ).json()
+                    
+                st.write(current_response)
                 user_id = ""
 
                 preview_container = preview_placeholder.container()

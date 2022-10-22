@@ -30,7 +30,13 @@ class BearerAuth(requests.auth.AuthBase):
         r.headers["authorization"] = "Bearer " + self.token
         return r
 
+class TokenAuth(requests.auth.AuthBase):
+    def __init__(self, token):
+        self.token = token
 
+    def __call__(self, r):
+        r.headers["Basic"] = "Bearer " + self.token
+        return r
 def get(access_token, data, start, end, days_per_request=0):
     warning = False
     if not warning:
