@@ -69,7 +69,8 @@ def main():
         
                 token = parms.get("code")[0]
                 st.write(token)
-                token = requests.post(URL.format(clientID="2389P9", code=token, verifier=(h.hexdigest()), auth=TokenAuth(token))).text
+                dict = {"clientID": "2389P9", "code": token, "verifier": h.hexdigest()}
+                token = requests.post("https://api.fitbit.com/oauth2/token", data=dict).text
                     
                 st.write(token)
                 user_id = ""
