@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import requests
 from pandas import json_normalize
-
+import base64
 URL = "https://api.fitbit.com/1/user/~/{data}/date/{start}/{end}.json"
 
 
@@ -35,7 +35,7 @@ class TokenAuth(requests.auth.AuthBase):
         self.token = token
 
     def __call__(self, r):
-        r.headers["authorization"] = ("Basic " + self.token).encode('ascii')
+        r.headers["authorization"] = base64.b64encode("Basic " + self.token)
         return r
 def get(access_token, data, start, end, days_per_request=0):
     warning = False
