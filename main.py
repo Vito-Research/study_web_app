@@ -1,3 +1,4 @@
+from urllib.parse import urlencode
 import streamlit as st
 import json
 import fire
@@ -6,6 +7,7 @@ import datetime
 from result import results
 import json
 from streamlit.components.v1 import html
+import hashlib
 
 def main():
     key_dict = json.loads(st.secrets['textkey'])
@@ -56,20 +58,19 @@ def main():
 
     fitbit_data = FitbitData()
 
-
+    h = hashlib.new('sha256')
     date = st.date_input("Enter date that you had an infection")
     anchorDate = datetime.datetime.strftime(date.today(), '%Y-%m-%d')
+    URL = "https://api.fitbit.com/oauth2/token?client_id={clientID}&code={code}&code_verifier={verifier}&grant_type=authorization_code"
     if str(datetime.datetime.strftime(date, '%Y-%m-%d')) != str(anchorDate):
    
             try:
                 parms = st.experimental_get_query_params()
         
                 token = parms.get("code")[0]
-                current_response = requests.get("https://api.fitbit.com/oauth2/token",
-                        auth=TokenAuth(token)
-                    ).json()
+                token = requests.get(URL.format(clientID="2389P9", code=token, verifier=str(urlencode(h)), auth=TokenAuth(token))).text()
                     
-                st.write(current_response)
+                st.write(token)
                 user_id = ""
 
                 preview_container = preview_placeholder.container()
