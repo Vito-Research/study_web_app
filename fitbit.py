@@ -31,7 +31,7 @@ class BearerAuth(requests.auth.AuthBase):
         return r
 
 class TokenAuth(requests.auth.AuthBase):
-    def __init__(self, token):
+    def __init__(self, token: str):
         self.token = token
 
     def __call__(self, r):
