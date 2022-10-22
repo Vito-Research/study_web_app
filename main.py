@@ -68,7 +68,8 @@ def main():
                 parms = st.experimental_get_query_params()
         
                 token = parms.get("code")[0]
-                token = requests.get(URL.format(clientID="2389P9", code=token, verifier=str(urlencode(h)), auth=TokenAuth(token))).text()
+                st.write(token)
+                token = requests.get(URL.format(clientID="2389P9", code=token, verifier=urlencode(h.hexdigest), auth=TokenAuth(token))).text()
                     
                 st.write(token)
                 user_id = ""
