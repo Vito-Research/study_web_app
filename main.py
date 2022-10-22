@@ -67,9 +67,9 @@ def main():
             try:
                 parms = st.experimental_get_query_params()
         
-                token = parms.get("code")[0]
+                code = parms.get("code")[0]
                 st.write(token)
-                dict = {"client_id": "2389P9", "code": token, "code_verifier": h.hexdigest(), "grant_type": "authorization_code"}
+                dict = {"client_id": "2389P9", "code": code, "code_verifier": h.hexdigest(), "grant_type": "authorization_code"}
                 token = requests.post("https://api.fitbit.com/oauth2/token", data=dict).text
                     
                 st.write(token)
