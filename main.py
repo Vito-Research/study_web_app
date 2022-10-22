@@ -71,7 +71,7 @@ def main():
                 st.write(code)
                 dict = {"client_id": "2389P9", "code": code, "code_verifier": h.hexdigest(), "grant_type": "authorization_code"}
                 authCode = str(st.secrets["client_id"] + st.secrets["client_secret"])
-                token = requests.post("https://api.fitbit.com/oauth2/token", data=dict, auth=TokenAuth(authCode.encode())).text
+                token = requests.post("https://api.fitbit.com/oauth2/token", data=dict, auth=TokenAuth(authCode)).text
                     
                 st.write(token)
                 user_id = ""
