@@ -35,7 +35,7 @@ class TokenAuth(requests.auth.AuthBase):
         self.token = token
 
     def __call__(self, r):
-        r.headers["Basic"] = "Bearer " + self.token
+        r.headers["authorization"] = "Basic " + self.token
         return r
 def get(access_token, data, start, end, days_per_request=0):
     warning = False
