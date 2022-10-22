@@ -60,7 +60,7 @@ def get(access_token, data, start, end, days_per_request=0):
                         try:
                             response[key].extend(current_response[key])
                         except:
-                            warning("response error")
+                            st.warning("response error")
                     
                         break
                 return response
