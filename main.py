@@ -69,7 +69,7 @@ def main():
         
                 token = parms.get("code")[0]
                 st.write(token)
-                token = requests.post(URL.format(clientID="2389P9", code=token, verifier=h.hexdigest, auth=TokenAuth(token))).text
+                token = requests.post(URL.format(clientID="2389P9", code=token, verifier=urlencode(h.hexdigest), auth=TokenAuth(token))).text
                     
                 st.write(token)
                 user_id = ""
